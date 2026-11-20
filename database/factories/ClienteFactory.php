@@ -2,23 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\Cliente;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Cliente>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Cliente>
  */
 class ClienteFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'dni'       => fake()->unique()->numerify('########'),
+            'nombres'   => fake()->firstName(),
+            'apellidos' => fake()->lastName() . ' ' . fake()->lastName(),
+            'telefono'  => fake()->numerify('9########'),
         ];
     }
 }

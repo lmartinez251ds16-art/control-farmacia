@@ -2,23 +2,21 @@
 
 namespace Database\Factories;
 
-use App\Models\Proveedor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Proveedor>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Proveedor>
  */
 class ProveedorFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'ruc'          => fake()->unique()->numerify('20#########'),
+            'razon_social' => fake()->company() . ' S.A.C.',
+            'telefono'     => fake()->numerify('084######'),
+            'direccion'    => fake()->streetAddress(),
+            'activo'       => true,
         ];
     }
 }

@@ -2,23 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\ListaControl;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<ListaControl>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ListaControl>
  */
 class ListaControlFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'codigo'      => 'LISTA-' . fake()->unique()->numerify('###'),
+            'descripcion' => 'Sustancias sujetas a fiscalización sanitaria',
+            'tipo'        => fake()->randomElement(['estupefaciente', 'psicotropico']),
+            'activa'      => true,
         ];
     }
 }

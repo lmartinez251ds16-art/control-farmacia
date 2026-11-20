@@ -2,23 +2,27 @@
 
 namespace Database\Factories;
 
-use App\Models\Categoria;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Categoria>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Categoria>
  */
 class CategoriaFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'nombre' => fake()->unique()->randomElement([
+                'Analgésicos y Antiinflamatorios',
+                'Antibióticos',
+                'Antihipertensivos',
+                'Antidiabéticos',
+                'Gastroprotectores',
+                'Psicotrópicos y Estupefacientes',
+                'Vitaminas y Suplementos',
+                'Antihistamínicos',
+            ]),
+            'activo' => true,
         ];
     }
 }
