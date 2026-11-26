@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class Medicamento extends Model
 {
@@ -23,6 +24,25 @@ class Medicamento extends Model
         'receta'     => 'Con receta médica',
         'controlado' => 'Controlado (receta especial)',
     ];
+
+    public function scopeActivos(Builder $consulta): void
+    {
+        $consulta->where('activo', true);
+    }
+
+    public function scopeDeCategoria(Builder $consulta, ?int $categoriaId): void
+    {
+        if ($categoriaId) {
+            $consulta->where('categoria_id', $categoriaId);
+        }
+    }
+
+    public function scopeDeCondicion(Builder $consulta, ?string $condicion): void
+    {
+        if ($condicion) {
+            $consulta->where('condicion_venta', $condicion);
+        }
+    }
 
     protected function casts(): array
     {
