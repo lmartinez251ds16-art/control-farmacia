@@ -49,30 +49,39 @@ class ClienteController extends Controller
      */
     public function show(Cliente $cliente)
     {
-        //
+        $dispensaciones = $cliente->dispensaciones()
+            ->with('usuario')
+            ->latest('fecha')
+            ->take(5)
+            ->get();
+
+        return view('clientes.show', compact('cliente', 'dispensaciones'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Cliente $cliente)
     {
-        //
+        return view('clientes.edit', compact('cliente'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateClienteRequest $request, Cliente $cliente)
     {
-        //
+        $cliente->update($request->validated());
+
+        return redirect()->route('clientes.show', $cliente)
+            ->with('ok', 'Datos del cliente actualizados.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Cliente $cliente)
     {
-        //
+        if ($cliente->dispensaciones()->where('estado', 'registrada')->exists()) {
+            return back()->with('error',
+                'No se puede desactivar: el cliente tiene dispensaciones activas registradas.');
+        }
+
+        $cliente->delete(); // Ejecuta SoftDeletes (deleted_at) definido en RNF04
+
+        return redirect()->route('clientes.index')
+            ->with('ok', 'Cliente desactivado correctamente.');
     }
+
 }
