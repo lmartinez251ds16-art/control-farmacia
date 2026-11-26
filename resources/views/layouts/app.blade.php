@@ -24,6 +24,8 @@
                 <li><a href="#">Lotes</a></li>
                 <li><a href="#">Clientes</a></li>
                 <li><a href="#">Dispensaciones</a></li>
+                <li><a href="{{ route('clientes.index') }}">Clientes</a></li>
+
             </ul>
         </nav>
     </header>
