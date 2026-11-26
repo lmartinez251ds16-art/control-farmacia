@@ -18,6 +18,12 @@ class Medicamento extends Model
         'lista_control_id', 'activo',
     ];
 
+    public const CONDICIONES_VENTA = [
+        'libre'      => 'Venta libre',
+        'receta'     => 'Con receta médica',
+        'controlado' => 'Controlado (receta especial)',
+    ];
+
     protected function casts(): array
     {
         return [

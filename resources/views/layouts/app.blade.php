@@ -20,7 +20,7 @@
             <ul><li><strong>{{ config('app.name') }}</strong></li></ul>
             <ul>
                 <li><a href="{{ route('inicio') }}">Inicio</a></li>
-                <li><a href="#">Medicamentos</a></li>
+                <li><a href="{{ route('medicamentos.index') }}">Medicamentos</a></li>
                 <li><a href="#">Lotes</a></li>
                 <li><a href="#">Clientes</a></li>
                 <li><a href="#">Dispensaciones</a></li>
