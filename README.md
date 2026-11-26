@@ -19,6 +19,15 @@ Proyecto integrador de DSI406 Tecnología Backend (Laravel + PostgreSQL).
 7. `php artisan migrate`
 8. `php artisan serve`
 
+## Datos de prueba
+Comando: `php artisan migrate:fresh --seed`
+
+| Usuario | Rol | Permiso Regente | Contraseña |
+| :--- | :--- | :---: | :--- |
+| `regente@farmacia.test` | `administrador` | Sí | `password` |
+| `admin@farmacia.test` | `administrador` | No | `password` |
+| `almacen@farmacia.test` | `almacenero` | No | `password` |
+| `tecnico@farmacia.test` | `tecnico_farmacia` | No | `password` |
 
 Autor: Luz Katherinne Martinez Mamani
 

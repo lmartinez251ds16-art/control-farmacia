@@ -1,3 +1,4 @@
+<!-- resources/views/layouts/app.blade.php -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('titulo', 'Inicio') · {{ config('app.name') }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <style>
+        .aviso-ok       { border-left: 6px solid #2f7d52; }
+        .aviso-error    { border-left: 6px solid #b3261e; }
+        .acciones       { display: flex; gap: 1rem; align-items: center; }
+        .estado-activo   { background: #e6f2ea; color: #2f7d52; }
+        .estado-inactivo { background: #f6e3e3; color: #b3261e; }
+    </style>
 </head>
 <body>
     <header class="container">
@@ -20,6 +28,13 @@
         </nav>
     </header>
     <main class="container">
+        @if (session('ok'))
+            <article class="aviso-ok">{{ session('ok') }}</article>
+        @endif
+        @if (session('error'))
+            <article class="aviso-error">{{ session('error') }}</article>
+        @endif
+
         @yield('contenido')
     </main>
     <footer class="container">
