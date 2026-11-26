@@ -32,19 +32,18 @@ class ClienteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+   public function create()
     {
-        //
+        return view('clientes.create', ['cliente' => new Cliente()]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreClienteRequest $request)
     {
-        //
-    }
+        $cliente = Cliente::create($request->validated());
 
+        return redirect()->route('clientes.show', $cliente)
+            ->with('ok', 'Cliente registrado correctamente.');
+    }
     /**
      * Display the specified resource.
      */
