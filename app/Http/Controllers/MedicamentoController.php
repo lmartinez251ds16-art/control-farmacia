@@ -52,17 +52,26 @@ class MedicamentoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+   public function create()
     {
-        //
+        return view('medicamentos.create', [
+            'medicamento' => new Medicamento(['precio_venta' => 0, 'stock_minimo' => 10, 'condicion_venta' => 'libre']),
+            'categorias'  => Categoria::where('activo', true)->orderBy('nombre')->get(),
+            'listas'      => ListaControl::where('activa', true)->orderBy('codigo')->get(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreMedicamentoRequest $request)
     {
-        //
+        $datos = $request->validated();
+        if ($datos['condicion_venta'] !== 'controlado') {
+            $datos['lista_control_id'] = null;
+        }
+
+        $medicamento = Medicamento::create($datos);
+
+        return redirect()->route('medicamentos.show', $medicamento)
+            ->with('ok', 'Medicamento registrado correctamente.');
     }
 
     /**
@@ -70,24 +79,56 @@ class MedicamentoController extends Controller
      */
     public function show(Medicamento $medicamento)
     {
-        //
+        $lotes = $medicamento->lotes()
+            ->with('proveedor')
+            ->orderBy('fecha_vencimiento')
+            ->get();
+
+        return view('medicamentos.show', [
+            'medicamento' => $medicamento->load(['categoria', 'listaControl']),
+            'lotes'       => $lotes,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Medicamento $medicamento)
     {
-        //
+        return view('medicamentos.edit', [
+            'medicamento' => $medicamento,
+            'categorias'  => Categoria::where('activo', true)->orderBy('nombre')->get(),
+            'listas'      => ListaControl::where('activa', true)->orderBy('codigo')->get(),
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateMedicamentoRequest $request, Medicamento $medicamento)
     {
-        //
+        $datos = $request->validated();
+        if ($datos['condicion_venta'] !== 'controlado') {
+            $datos['lista_control_id'] = null;
+        }
+
+        $medicamento->update($datos);
+
+        return redirect()->route('medicamentos.show', $medicamento)
+            ->with('ok', 'Datos del medicamento actualizados.');
     }
+
+    public function cambiarEstado(Medicamento $medicamento)
+    {
+        $medicamento->update(['activo' => ! $medicamento->activo]);
+
+        if ($medicamento->activo) {
+            return back()->with('ok', 'Medicamento activado.');
+        }
+
+        $stockVigente = $medicamento->stock_vigente;
+        $aviso = 'Medicamento desactivado (baja lógica aplicada).';
+        if ($stockVigente > 0) {
+            $aviso .= " Aún cuenta con $stockVigente unidades en lotes vigentes.";
+        }
+
+        return back()->with('ok', $aviso);
+    }
+
 
     /**
      * Remove the specified resource from storage.

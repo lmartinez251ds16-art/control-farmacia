@@ -2,28 +2,20 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class UpdateMedicamentoRequest extends FormRequest
+class UpdateMedicamentoRequest extends StoreMedicamentoRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
-        return [
-            //
+        $reglas = parent::rules();
+        $id = $this->route('medicamento');
+
+        $reglas['codigo_interno'] = [
+            'required', 'string', 'max:30',
+            Rule::unique('medicamentos', 'codigo_interno')->ignore($id),
         ];
+
+        return $reglas;
     }
 }
